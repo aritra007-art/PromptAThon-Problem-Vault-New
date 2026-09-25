@@ -1,0 +1,4 @@
+-- Aritra Vault Cluster Production Snapshot
+CREATE TABLE metadata_backup (id INT, name TEXT, timestamp TEXT);
+INSERT INTO metadata_backup VALUES (1, "Vault Cluster Seed Snapshot", datetime("now"));
+-- End of snapshot archive

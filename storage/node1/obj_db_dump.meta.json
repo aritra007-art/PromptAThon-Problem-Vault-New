@@ -1,0 +1,12 @@
+{
+  "objectId": "obj_db_dump",
+  "filename": "production_snapshot_2026.sql.gz",
+  "mimeType": "application/gzip",
+  "size": 225,
+  "version": 1,
+  "expectedChecksum": "d09b27890443bab8139b4a67e6a1682fb2eb2b05c6591f47020a611c69f5a1f9",
+  "storedChecksum": "d09b27890443bab8139b4a67e6a1682fb2eb2b05c6591f47020a611c69f5a1f9",
+  "isCorrupted": false,
+  "isStale": false,
+  "storedAt": "2026-09-25T19:54:36.550Z"
+}

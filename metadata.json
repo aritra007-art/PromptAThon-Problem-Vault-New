@@ -1,0 +1,6 @@
+{
+  "name": "Aritra's Vault - Fault-Tolerant Distributed Object Storage",
+  "description": "A fault-tolerant distributed object storage system prototype featuring multi-node replication, automated replica repair, checksum integrity verification, node failure simulation, and cluster rebalancing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

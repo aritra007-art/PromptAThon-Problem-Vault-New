@@ -1,0 +1,138 @@
+{
+  "objects": [
+    {
+      "objectId": "obj_arch_pdf",
+      "filename": "vault-architecture-specification.pdf",
+      "size": 357,
+      "mimeType": "application/pdf",
+      "version": 1,
+      "checksum": "3f3395c83256a4ad002a03bd44e20b7d0e0dfcee5bf23a7cd1bba10a9a5cf4a9",
+      "replicationFactor": 3,
+      "status": "HEALTHY",
+      "uploadedAt": "2026-09-25T16:24:36.550Z",
+      "lastVerifiedAt": "2026-09-25T20:12:36.550Z",
+      "description": "Core architectural design doc for Aritra’s distributed object store",
+      "isDemo": 1
+    },
+    {
+      "objectId": "obj_db_dump",
+      "filename": "production_snapshot_2026.sql.gz",
+      "size": 225,
+      "mimeType": "application/gzip",
+      "version": 1,
+      "checksum": "d09b27890443bab8139b4a67e6a1682fb2eb2b05c6591f47020a611c69f5a1f9",
+      "replicationFactor": 3,
+      "status": "HEALTHY",
+      "uploadedAt": "2026-09-25T12:24:36.550Z",
+      "lastVerifiedAt": "2026-09-25T19:54:36.550Z",
+      "description": "Cluster metadata and transactional snapshot archive",
+      "isDemo": 1
+    }
+  ],
+  "replicas": [
+    {
+      "objectId": "obj_arch_pdf",
+      "nodeId": "node-1",
+      "version": 1,
+      "storedChecksum": "3f3395c83256a4ad002a03bd44e20b7d0e0dfcee5bf23a7cd1bba10a9a5cf4a9",
+      "status": "HEALTHY",
+      "lastVerifiedAt": "2026-09-25T20:12:36.550Z",
+      "isCorrupted": 0
+    },
+    {
+      "objectId": "obj_arch_pdf",
+      "nodeId": "node-2",
+      "version": 1,
+      "storedChecksum": "3f3395c83256a4ad002a03bd44e20b7d0e0dfcee5bf23a7cd1bba10a9a5cf4a9",
+      "status": "HEALTHY",
+      "lastVerifiedAt": "2026-09-25T20:12:36.550Z",
+      "isCorrupted": 0
+    },
+    {
+      "objectId": "obj_arch_pdf",
+      "nodeId": "node-4",
+      "version": 1,
+      "storedChecksum": "3f3395c83256a4ad002a03bd44e20b7d0e0dfcee5bf23a7cd1bba10a9a5cf4a9",
+      "status": "HEALTHY",
+      "lastVerifiedAt": "2026-09-25T20:12:36.550Z",
+      "isCorrupted": 0
+    },
+    {
+      "objectId": "obj_db_dump",
+      "nodeId": "node-1",
+      "version": 1,
+      "storedChecksum": "d09b27890443bab8139b4a67e6a1682fb2eb2b05c6591f47020a611c69f5a1f9",
+      "status": "HEALTHY",
+      "lastVerifiedAt": "2026-09-25T19:54:36.550Z",
+      "isCorrupted": 0
+    },
+    {
+      "objectId": "obj_db_dump",
+      "nodeId": "node-3",
+      "version": 1,
+      "storedChecksum": "d09b27890443bab8139b4a67e6a1682fb2eb2b05c6591f47020a611c69f5a1f9",
+      "status": "HEALTHY",
+      "lastVerifiedAt": "2026-09-25T19:54:36.550Z",
+      "isCorrupted": 0
+    },
+    {
+      "objectId": "obj_db_dump",
+      "nodeId": "node-4",
+      "version": 1,
+      "storedChecksum": "d09b27890443bab8139b4a67e6a1682fb2eb2b05c6591f47020a611c69f5a1f9",
+      "status": "HEALTHY",
+      "lastVerifiedAt": "2026-09-25T19:54:36.550Z",
+      "isCorrupted": 0
+    }
+  ],
+  "activities": [
+    {
+      "id": "evt_1",
+      "timestamp": "2026-09-25T20:12:36.550Z",
+      "type": "INTEGRITY_CHECK",
+      "title": "Routine Background Scrubber",
+      "description": "Verified 8 replicas across 4 active nodes. All checksums matched canonical hashes.",
+      "severity": "info",
+      "nodeId": null,
+      "objectId": null,
+      "filename": null
+    },
+    {
+      "id": "evt_2",
+      "timestamp": "2026-09-25T18:24:36.550Z",
+      "type": "OBJECT_UPLOADED",
+      "title": "Object Ingestion Complete",
+      "description": "Placed replicas across Node 2 and Node 3.",
+      "severity": "success",
+      "nodeId": null,
+      "objectId": "obj_ml_model",
+      "filename": "whisper-large-v3-weights.safetensors"
+    },
+    {
+      "id": "evt_3",
+      "timestamp": "2026-09-25T16:24:36.550Z",
+      "type": "REPLICATION_COMPLETED",
+      "title": "Tri-Way Replication Settled",
+      "description": "vault-architecture-specification.pdf quorum verified on Node 1, Node 2, and Node 4.",
+      "severity": "success",
+      "nodeId": null,
+      "objectId": "obj_arch_pdf",
+      "filename": "vault-architecture-specification.pdf"
+    },
+    {
+      "id": "evt_4",
+      "timestamp": "2026-09-24T20:24:36.550Z",
+      "type": "NODE_ONLINE",
+      "title": "Cluster Topology Initialized",
+      "description": "Storage Node 1, Node 2, Node 3, and Node 4 joined the quorum with healthy state.",
+      "severity": "info",
+      "nodeId": null,
+      "objectId": null,
+      "filename": null
+    }
+  ],
+  "repair_tasks": [],
+  "cluster_config": {
+    "autoRepairEnabled": "true"
+  }
+}

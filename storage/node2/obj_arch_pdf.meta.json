@@ -1,0 +1,12 @@
+{
+  "objectId": "obj_arch_pdf",
+  "filename": "vault-architecture-specification.pdf",
+  "mimeType": "application/pdf",
+  "size": 357,
+  "version": 1,
+  "expectedChecksum": "3f3395c83256a4ad002a03bd44e20b7d0e0dfcee5bf23a7cd1bba10a9a5cf4a9",
+  "storedChecksum": "3f3395c83256a4ad002a03bd44e20b7d0e0dfcee5bf23a7cd1bba10a9a5cf4a9",
+  "isCorrupted": false,
+  "isStale": false,
+  "storedAt": "2026-09-25T20:12:36.550Z"
+}

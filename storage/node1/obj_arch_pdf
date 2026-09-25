@@ -1,0 +1,14 @@
+%PDF-1.4
+1 0 obj
+<< /Title (Aritra's Vault Architecture Specification) /Author (Aritra Pal) /Subject (Distributed Fault-Tolerant Storage) >>
+endobj
+2 0 obj
+<< /Length 128 >>
+stream
+Aritra's Vault Distributed Object Store Prototype.
+Quorum consensus, SHA-256 verification, and automatic replica self-healing.
+endstream
+endobj
+trailer
+<< /Root 1 0 R >>
+%%EOF
