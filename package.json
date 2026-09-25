@@ -4,35 +4,29 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx server.ts",
-    "vault:dev": "tsx server.ts",
+    "dev": "vite --port=3000 --host=0.0.0.0",
+    "vault:dev": "DATABASE_MODE=sqlite STORAGE_MODE=local tsx server.ts",
+    "vault:start": "tsx server.ts",
     "start": "tsx server.ts",
-    "coordinator": "tsx server/coordinatorStandalone.ts",
-    "node:1": "tsx server/storageNode.ts --id=node-1 --port=5001 --dir=storage/node1",
-    "node:2": "tsx server/storageNode.ts --id=node-2 --port=5002 --dir=storage/node2",
-    "node:3": "tsx server/storageNode.ts --id=node-3 --port=5003 --dir=storage/node3",
-    "node:4": "tsx server/storageNode.ts --id=node-4 --port=5004 --dir=storage/node4",
     "build": "vite build",
     "preview": "vite preview",
-    "clean": "rm -rf dist server.js storage",
+    "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
+    "@supabase/supabase-js": "^2.117.2",
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "^6.1.1",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
-    "multer": "^2.4.0",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "vite": "^8.3.0"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/multer": "^2.2.0",
     "@types/node": "^22.14.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
@@ -40,6 +34,7 @@
     "esbuild": "^0.25.0",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.21.0",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "@types/express": "^4.17.21"
   }
 }

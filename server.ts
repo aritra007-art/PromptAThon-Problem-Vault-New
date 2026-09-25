@@ -1,68 +1,67 @@
 import express from 'express';
+import dotenv from 'dotenv';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { initDatabase } from './server/db.js';
-import { createStorageNodeServer, DEFAULT_STORAGE_NODES } from './server/storageNode.js';
-import { createCoordinatorRouter } from './server/coordinator.js';
+import { createCoordinatorRouter } from './server/coordinator';
+import { startAllStorageNodes } from './server/nodes/clusterNodes';
+import { getDatabaseProvider } from './server/db';
+import { getStorageProvider } from './server/storage';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+dotenv.config();
+
+const PORT = Number(process.env.PORT || 3000);
+const STORAGE_MODE = process.env.STORAGE_MODE || 'local';
+const DATABASE_MODE = process.env.DATABASE_MODE || 'sqlite';
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
 
-  // Parse JSON bodies for coordinator
-  app.use(express.json());
+  console.log('====================================================');
+  console.log('🛡️  Aritra\'s Vault: Distributed Object Storage');
+  console.log(`   DATABASE_MODE: ${DATABASE_MODE}`);
+  console.log(`   STORAGE_MODE:  ${STORAGE_MODE}`);
+  console.log('====================================================');
 
-  // Initialize persistent SQLite metadata database
-  console.log('[Vault Server] Initializing SQLite metadata database...');
-  await initDatabase();
-  console.log('[Vault Server] SQLite metadata database ready.');
+  // Initialize DB and Storage Providers
+  await getDatabaseProvider();
+  await getStorageProvider();
 
-  // Launch the 4 Storage Node Daemons on ports 5001, 5002, 5003, 5004
-  for (const nodeConfig of DEFAULT_STORAGE_NODES) {
-    const { app: nodeApp } = createStorageNodeServer(nodeConfig);
-    const server = nodeApp.listen(nodeConfig.port, '0.0.0.0', () => {
-      console.log(`[Storage Daemon] ${nodeConfig.name} (${nodeConfig.id}) online on http://127.0.0.1:${nodeConfig.port} [dir: ${nodeConfig.storageDir}]`);
-    });
-    server.on('error', (err: any) => {
-      if (err.code === 'EADDRINUSE') {
-        console.log(`[Storage Daemon] ${nodeConfig.name} port ${nodeConfig.port} already in use (assumed external daemon running).`);
-      } else {
-        console.error(`[Storage Daemon] Error starting ${nodeConfig.id}:`, err);
-      }
-    });
+  // If in local storage mode, start the 4 independent HTTP storage nodes
+  if (STORAGE_MODE === 'local') {
+    try {
+      await startAllStorageNodes();
+    } catch (err) {
+      console.warn('⚠️ Some local storage nodes could not be bound:', err);
+    }
+  } else {
+    console.log('☁️  Cloud storage mode active. Using Supabase bucket "vault-objects" with logical replica paths (node-1..4).');
   }
 
-  // Mount Coordinator API Router at /api
-  const coordinatorRouter = createCoordinatorRouter();
-  app.use('/api', coordinatorRouter);
+  // Coordinator API Routes
+  app.use('/api/vault', createCoordinatorRouter());
 
-  // Setup Vite middleware in dev or static files in production
-  if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.resolve(__dirname, 'dist')));
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
-    });
-  } else {
+  // Mount Vite middlewares in development
+  if (process.env.NODE_ENV !== 'production') {
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
-      server: {
-        middlewareMode: true,
-        hmr: process.env.DISABLE_HMR !== 'true',
-      },
+      server: { middlewareMode: true },
       appType: 'spa',
     });
     app.use(vite.middlewares);
+  } else {
+    // Serve production static build
+    const distPath = path.resolve(process.cwd(), 'dist');
+    app.use(express.static(distPath));
+    app.get('*', (_req, res) => {
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[Vault Server] Coordinator & Web UI active on http://0.0.0.0:${PORT}`);
+    console.log(`🚀 Vault Coordinator & UI running at http://0.0.0.0:${PORT}`);
   });
 }
 
 startServer().catch(err => {
-  console.error('[Vault Server] Failed to start cluster:', err);
+  console.error('Fatal error starting Vault server:', err);
   process.exit(1);
 });

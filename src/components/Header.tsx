@@ -1,9 +1,11 @@
 import React from 'react';
-import { Database, ShieldAlert, Cpu, CheckCircle2, RotateCcw, Play, Activity, SlidersHorizontal, Sparkles } from 'lucide-react';
+import { Database, ShieldAlert, Cpu, CheckCircle2, RotateCcw, Play, Activity, SlidersHorizontal, Sparkles, Cloud, HardDrive } from 'lucide-react';
 import { ClusterStats } from '../types/cluster';
+import { BackendModeInfo } from '../services/backendService';
 
 interface HeaderProps {
   stats: ClusterStats;
+  backendMode?: BackendModeInfo;
   autoRepair: boolean;
   onToggleAutoRepair: (enabled: boolean) => void;
   onSimulateNodeFailure: () => void;
@@ -17,6 +19,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({
   stats,
+  backendMode,
   autoRepair,
   onToggleAutoRepair,
   onSimulateNodeFailure,
@@ -30,6 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
   const isHealthy = stats.clusterHealth === 'HEALTHY';
   const isDegraded = stats.clusterHealth === 'DEGRADED';
   const isCritical = stats.clusterHealth === 'CRITICAL';
+  const isCloud = backendMode?.isCloudMode;
 
   return (
     <header
@@ -74,6 +78,23 @@ export const Header: React.FC<HeaderProps> = ({
                 <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-[#161619] text-cyan-300 border border-cyan-500/20 font-medium">
                   v1.2-distributed
                 </span>
+
+                {/* Architecture Mode Badge: LOCAL CLUSTER or CLOUD STORAGE */}
+                <div
+                  className={`flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium border transition-all ${
+                    isCloud
+                      ? 'bg-indigo-950/60 text-indigo-300 border-indigo-500/40 shadow-[0_0_10px_rgba(99,102,241,0.25)]'
+                      : 'bg-[#18181B] text-cyan-300 border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.15)]'
+                  }`}
+                  title={
+                    isCloud
+                      ? 'Cloud Mode: Supabase PostgreSQL metadata + Supabase Storage (vault-objects) with 4 logical replica domains'
+                      : 'Local Cluster Mode: SQLite metadata + 4 genuine independent HTTP storage node daemons'
+                  }
+                >
+                  {isCloud ? <Cloud className="w-3 h-3 text-indigo-400" /> : <HardDrive className="w-3 h-3 text-cyan-400" />}
+                  <span>{isCloud ? 'CLOUD STORAGE' : 'LOCAL CLUSTER'}</span>
+                </div>
                 
                 {/* Cluster Health Status Indicator with soft pulse glow */}
                 <div

@@ -40,6 +40,7 @@ export default function App() {
     deleteObject,
     resetCluster,
     updateConfig,
+    backendMode,
   } = useVaultCluster();
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
@@ -110,6 +111,7 @@ export default function App() {
       {/* Header */}
       <Header
         stats={stats}
+        backendMode={backendMode}
         autoRepair={config.autoRepairEnabled}
         onToggleAutoRepair={enabled => updateConfig({ autoRepairEnabled: enabled })}
         onSimulateNodeFailure={handleQuickFailure}
